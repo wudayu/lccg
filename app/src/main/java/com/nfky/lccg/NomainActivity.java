@@ -42,6 +42,12 @@ public class NomainActivity extends AppCompatActivity {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSettings.setUseWideViewPort(true);
         webSettings.setJavaScriptEnabled(true);
+        // 设置可以支持缩放
+        webSettings.setSupportZoom(true);
+        // 设置出现缩放工具
+        webSettings.setBuiltInZoomControls(true);
+        // 为图片添加放大缩小功能
+        webSettings.setUseWideViewPort(true);
 
         wv.setWebViewClient(new WebViewClient() {
             @Override
