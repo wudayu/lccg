@@ -97,18 +97,18 @@ public class MainActivity extends AppCompatActivity {
 
         if (keyCode == KeyEvent.KEYCODE_BACK && !wv.canGoBack() && !wv.getUrl().contains("login")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("即将退出，是否清除登录信息？");
-            builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            builder.setMessage("即将退出，是否保留登录信息？");
+            builder.setPositiveButton("保留", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    MainActivity.this.finish();
+                }
+            });
+            builder.setNegativeButton("不保留", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // 清除登陆Cookie
                     CookieManager.getInstance().removeSessionCookie();
-                    MainActivity.this.finish();
-                }
-            });
-            builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
                     MainActivity.this.finish();
                 }
             });
