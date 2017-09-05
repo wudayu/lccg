@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     static String URL = "http://hxapp.udplat.com/";
     WebView wv = null;
     TextView tvTitle = null;
+    View ivBack = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
         wv = (WebView) findViewById(R.id.wv_main);
         tvTitle = (TextView) findViewById(R.id.tv_title);
+        ivBack = findViewById(R.id.iv_back);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        initWidgets();
         initCookie();
         initWebView();
+    }
+
+    void initWidgets() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyDown(KeyEvent.KEYCODE_BACK, null);
+            }
+        });
     }
 
     void initCookie() {
@@ -142,13 +154,4 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    void goBack(View view) {
-        Runtime runtime = Runtime.getRuntime();
-
-        try {
-            runtime.exec("input keyevent " + KeyEvent.KEYCODE_BACK);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
