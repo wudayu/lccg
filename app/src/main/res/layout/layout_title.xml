@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 公用的标题栏 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_title"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_title_height"
+    android:background="@color/colorDark" >
+    <!-- 返回 -->
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/dp44"
+        android:layout_height="@dimen/dp18"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/back_in_white"
+        android:visibility="visible"
+        android:onClick="goBack"/>
+    <!-- 标题 -->
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:text="综合监管"
+        android:textSize="@dimen/px34"
+        android:textColor="#FFFFFF"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"/>
+</RelativeLayout>

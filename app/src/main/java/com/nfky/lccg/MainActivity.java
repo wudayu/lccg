@@ -6,18 +6,24 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.CookieSyncManager;
+import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
     static String URL = "http://hxapp.udplat.com/";
     WebView wv = null;
+    TextView tvTitle = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         wv = (WebView) findViewById(R.id.wv_main);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE |
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -67,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(webView, s);
             }
         });
+        wv.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView webView, String title) {
+                super.onReceivedTitle(webView, title);
+
+                tvTitle.setText(title);
+            }
+        });
 
         wv.loadUrl(URL);
     }
@@ -90,12 +105,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && wv.canGoBack() && !wv.getUrl().equals(URL)) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (onPressBack())
+                return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    boolean onPressBack() {
+        if (wv.canGoBack() && !wv.getUrl().equals(URL)){
             wv.goBack();
             return true;
         }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK && !wv.canGoBack() && !wv.getUrl().contains("login")) {
+        if (!wv.canGoBack() && !wv.getUrl().contains("login")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("即将退出，是否保留登录信息？");
             builder.setPositiveButton("保留", new DialogInterface.OnClickListener() {
@@ -115,6 +139,16 @@ public class MainActivity extends AppCompatActivity {
             builder.show();
         }
 
-        return super.onKeyDown(keyCode, event);
+        return false;
+    }
+
+    void goBack(View view) {
+        Runtime runtime = Runtime.getRuntime();
+
+        try {
+            runtime.exec("input keyevent " + KeyEvent.KEYCODE_BACK);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
