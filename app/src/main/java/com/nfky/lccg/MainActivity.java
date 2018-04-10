@@ -21,7 +21,10 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String URL = "http://hxapp.udplat.com/";
+    static String URL = "http://hxapp.udplat.com/"; // [生产]
+//    static String URL = "http://221.226.85.187:18351/"; // [上线]
+//    static String URL = "http://172.18.30.22:8351/"; // [测试]
+//    static String URL = "http://192.168.21.20:8080/"; // 内部开发
     WebView wv = null;
     TextView tvTitle = null;
     View ivBack = null;
@@ -126,11 +129,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     boolean onPressBack() {
-        if (wv.canGoBack() && !wv.getUrl().equals(URL)){
+        if (wv.getUrl().contains("login")) {
+            this.finish();
+            return true;
+        }
+
+        if (wv.canGoBack() && !wv.getUrl().equals(URL)) {
             wv.goBack();
             return true;
         }
 
+        /*
         if (!wv.canGoBack() && !wv.getUrl().contains("login")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("即将退出，是否保留登录信息？");
@@ -150,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
             });
             builder.show();
         }
+        */
 
         return false;
     }
